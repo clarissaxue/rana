@@ -1,2 +1,2 @@
 # rana
-An iOS service app to facilitate communication between photographers and those who want their pictures taken.
+A fast and friendly app to expedite communication between photographers and users.
