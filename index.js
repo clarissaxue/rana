@@ -1,4 +1,5 @@
-import { AppRegistry } from 'react-native';
+import { Navigation } from 'react-native-navigation';
 import App from './App';
+import { registerScreens } from './screens';
 
-AppRegistry.registerComponent('rana', () => App);
+registerScreens();
