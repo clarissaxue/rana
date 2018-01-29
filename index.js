@@ -1,5 +1,11 @@
 import { Navigation } from 'react-native-navigation';
-import App from './App';
+import { store } from './redux/store';
+import { Provider } from 'react-redux';
 import { registerScreens } from './screens';
 
-registerScreens();
+registerScreens(store, Provider);
+Navigation.startSingleScreenApp({
+    screen: {
+        screen: 'rana'
+    }
+});

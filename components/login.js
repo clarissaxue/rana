@@ -1,23 +1,31 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { Button, Text } from 'react-native-elements';
+import { bindActionCreators } from "redux";
+import { requestLogin } from '../redux/actions/loginAction';
+import { connect } from 'react-redux';
+import { loginSaga } from '../redux/sagas';
+import { sagaMiddleware } from '../redux/store';
+
+
+sagaMiddleware.run(loginSaga);
 
 class LoginScreen extends Component {
+    constructor(props) {
+        super(props);
+    }
     static navigatorStyle = {
         navBarHidden: true
-      }
+    }
 
     login = () => {
-        this.props.navigator.showModal({
-            screen: 'HomeScreen',
-            title: 'Home is here'
-        });
+        this.props.requestLogin("bryevo");
     }
 
     render() {
         return (
             <View>
-                <Text h1>Rana</Text>
+                <Text h1>Please log in!</Text>
                 <Text />
                 <Button backgroundColor="teal" color="white" title="Create Account" borderRadius={30} large raised />
                 <Text />
@@ -27,4 +35,10 @@ class LoginScreen extends Component {
     }
 }
 
-export default LoginScreen;
+function mapDispatchToProps(dispatch) {
+    return {
+        requestLogin: bindActionCreators(requestLogin, dispatch)
+    };
+}
+
+export default connect(null, mapDispatchToProps)(LoginScreen);
