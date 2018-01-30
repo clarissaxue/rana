@@ -8,7 +8,7 @@ import { requestLogout } from '../redux/actions/loginAction';
 class ProfileScreen extends Component {
     static navigatorStyle = {
         navBarHidden: true
-    }
+    };
 
     componentWillMount() {
         //Set redux user to home
