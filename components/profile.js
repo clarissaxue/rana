@@ -26,7 +26,7 @@ class ProfileScreen extends Component {
     render() {
         return (
             <View>
-                <Text h1>Hello {this.state.user.username}</Text>
+                <Text h1>Hello {this.state.user.phoneNumber}</Text>
                 <Button onPress={this.logout} backgroundColor="black" color="white" title="Log Out" borderRadius={30} large raised />
             </View>
         );

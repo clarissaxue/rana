@@ -1,39 +1,49 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { ScrollView, TextInput } from 'react-native';
 import { Button, Text } from 'react-native-elements';
+import { reduxForm, Field } from 'redux-form';
 import { bindActionCreators } from "redux";
 import { requestLogin } from '../redux/actions/loginAction';
 import { connect } from 'react-redux';
 import { loginSaga } from '../redux/sagas';
 import { sagaMiddleware } from '../redux/store';
-
+// import { WhiteText } from './styles/styledComponents';
 
 sagaMiddleware.run(loginSaga);
 
 class LoginScreen extends Component {
+    static navigatorStyle = {
+        navBarBackgroundColor: '#FFFFFF',
+        screenBackgroundColor: '#FFFFFF',
+        statusBarTextColorSchemeSingleScreen: 'dark'
+    };
+
     constructor(props) {
         super(props);
-    }
-    static navigatorStyle = {
-        navBarHidden: true
+
+        this.state = {
+            number: this.randomizePhoneNumber()
+        };
     }
 
-    login = () => {
-        this.props.requestLogin("bryevo");
+    randomizePhoneNumber = () => {
+        var number = Math.floor(Math.random() * 9000000000 + 1000000000).toString();
+        return '(' + number.substr(0, 3) + ')' + number.substr(4, 3) + '-' + number.substr(6, 4);
     }
-
+    
     render() {
         return (
-            <View>
-                <Text h1>Please log in!</Text>
-                <Text />
-                <Button backgroundColor="teal" color="white" title="Create Account" borderRadius={30} large raised />
-                <Text />
-                <Button onPress={this.login} backgroundColor="black" color="white" title="Login" borderRadius={30} large raised />
-            </View>
+            <ScrollView keyboardShouldPersistTaps={'handled'}>
+                <Text>What's your number?</Text>
+                <Text>{this.randomizePhoneNumber}</Text>
+                <Field name={'number'} component={() => { return <TextInput value={this.state.number} /> }} />
+                <Button onPress={() => this.props.requestLogin(this.state.number)} backgroundColor="black" color="white" title="Log in" borderRadius={30} large raised />
+
+            </ScrollView>
         );
     }
 }
+
 
 function mapDispatchToProps(dispatch) {
     return {
@@ -41,4 +51,5 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(null, mapDispatchToProps)(LoginScreen);
+//
+export default connect(null, mapDispatchToProps)(reduxForm({ form: 'signIn' })(LoginScreen));

@@ -5,7 +5,7 @@ export default function userReducer(state = [], action) {
             return state;
         case 'RECEIVE_LOGIN_USER':
             console.log(action.type);
-            return [...state, Object.assign({}, { username: action.user })];
+            return [...state, Object.assign({}, { phoneNumber: action.phoneNumber })];
 
         case 'REQUEST_LOGOUT_USER':
             return state = [];

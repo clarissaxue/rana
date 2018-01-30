@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
-import { Platform, Text, View } from 'react-native';
+import { View } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import { bindActionCreators, combineReducers } from "redux";
 import { connect, Provider } from 'react-redux';
-import HomeScreen from './components/home';
-import LoginScreen from './components/login';
 import { registerScreens } from './screens';
 import { store } from './redux/store';
 import { requestLogin, receiveLogin } from './redux/actions/loginAction';
 import { loadUser } from './redux/sagas';
 import storage from 'redux-persist/lib/storage';
-
 
 class App extends Component {
   constructor(props) {
@@ -65,7 +62,7 @@ class App extends Component {
       //Renders Single Page App for Login
       Navigation.startSingleScreenApp({
         screen: {
-          screen: 'LoginScreen'
+          screen: 'GetStartedScreen'
         },
         animationType: 'fade'
       });
@@ -73,7 +70,7 @@ class App extends Component {
   }
   //Render returns null because the Navigation renders the app
   render() {
-    return null
+    return null;
   }
 }
 

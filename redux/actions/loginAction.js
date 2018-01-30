@@ -1,11 +1,11 @@
 /**
  * Action to request user login
- * @param {*login information} userLoginInfo 
+ * @param {*p phone number} phoneNumber 
  */
-export const requestLogin = (userLoginInfo) => {
+export const requestLogin = (number) => {
     return {
         type: "REQUEST_LOGIN_USER",
-        user: userLoginInfo
+        phoneNumber: number
     }
 };
 
@@ -16,7 +16,8 @@ export const requestLogin = (userLoginInfo) => {
 export const receiveLogin = (userData) => {
     return {
         type: "RECEIVE_LOGIN_USER",
-        user: userData
+        //temporary phoneNumber prop
+        phoneNumber: userData
     }
 };
 

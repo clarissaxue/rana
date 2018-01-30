@@ -5,7 +5,7 @@ import { requestLogin, receiveLogin, requestLogout } from './actions/loginAction
 export function* fetchUser(action) {
     //call some api to fetch data
     //const user = yield call(API.getUserData, action);
-    const user = action.user;
+    const user = action.phoneNumber;
 
     //Dispatches receive login action to the reducer
     yield put(receiveLogin(user));
