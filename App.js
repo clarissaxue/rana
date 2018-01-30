@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AsyncStorage, Platform, Text, View } from 'react-native';
+import { Platform, Text, View } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import { bindActionCreators, combineReducers } from "redux";
 import { connect, Provider } from 'react-redux';
