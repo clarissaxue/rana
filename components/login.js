@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { ScrollView, TextInput } from 'react-native';
-import { Button, Text } from 'react-native-elements';
-import { reduxForm, Field } from 'redux-form';
+import { Button, FormLabel, FormInput, FormValidationMessage, Text } from 'react-native-elements';
 import { bindActionCreators } from "redux";
 import { requestLogin } from '../redux/actions/loginAction';
 import { connect } from 'react-redux';
@@ -22,22 +21,31 @@ class LoginScreen extends Component {
         super(props);
 
         this.state = {
-            number: this.randomizePhoneNumber()
+            // Must Register phone number in Twilio console
+            // number: this.randomizePhoneNumber()
         };
+    }
+
+    requestVerification = () => {
+        this.props.requestLogin(this.state.number);
+        this.props.navigator.push({
+            screen: 'VerifyLoginScreen'
+        });
     }
 
     randomizePhoneNumber = () => {
         var number = Math.floor(Math.random() * 9000000000 + 1000000000).toString();
         return '(' + number.substr(0, 3) + ')' + number.substr(4, 3) + '-' + number.substr(6, 4);
     }
-    
+
     render() {
         return (
             <ScrollView keyboardShouldPersistTaps={'handled'}>
-                <Text>What's your number?</Text>
-                <Text>{this.randomizePhoneNumber}</Text>
-                <Field name={'number'} component={() => { return <TextInput value={this.state.number} /> }} />
-                <Button onPress={() => this.props.requestLogin(this.state.number)} backgroundColor="black" color="white" title="Log in" borderRadius={30} large raised />
+                <FormLabel>What's your number?</FormLabel>
+                <FormInput onChangeText={this.handleText} value={this.state.number} />
+                <FormValidationMessage>This field is required</FormValidationMessage>
+                <Text />
+                <Button onPress={this.requestVerification} backgroundColor="black" color="white" title="Log in" borderRadius={30} large raised />
 
             </ScrollView>
         );
@@ -51,5 +59,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-//
-export default connect(null, mapDispatchToProps)(reduxForm({ form: 'signIn' })(LoginScreen));
+export default connect(null, mapDispatchToProps)(LoginScreen);

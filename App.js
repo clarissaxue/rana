@@ -16,31 +16,27 @@ class App extends Component {
     //Listens to changes in the store and there are changes performs a callback function
     store.subscribe(this.onUserUpdate.bind(this));
 
-    this.currentUser = this.props.user;
-    this.startApp(this.currentUser);
+    this.startApp(this.props.login.navigate || "login");
   }
 
   /**
-   * function that gets the current state of the user in the redux store.
+   * function that gets the current state of the login in the redux store and chooses a navigation app.
    */
   onUserUpdate() {
-    let { user } = store.getState();
-    console.log("User: ", user);
-    // console.log("Current root: ", this.currentRoot);
+    let { login } = store.getState();
+    console.log("Login state: ", login);
 
     // handle a root change
-    if (user.length <= 1 && this.currentUser != user) {
-      this.currentUser = user;
-      this.startApp(user);
-    }
+    this.startApp(login.navigate);
   }
 
   /**
    * Starts the application as a tab based app or a single screen app
-   * @param {*user prop from redux store} user
+   * @param {*navigate prop from redux store to navigate through app states
+} navigate
    */
-  startApp = (user) => {
-    if (user.length > 0) {
+  startApp = (navigate) => {
+    if (navigate === "home") {
       //Renders Tab App
       Navigation.startTabBasedApp({
         tabs: [
@@ -58,7 +54,7 @@ class App extends Component {
         animationType: 'fade'
       });
     }
-    else {
+    else if (navigate === "login") {
       //Renders Single Page App for Login
       Navigation.startSingleScreenApp({
         screen: {
@@ -76,7 +72,9 @@ class App extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    user: state.user
+    login: state.login,
+    user: state.user,
+
   };
 }
 

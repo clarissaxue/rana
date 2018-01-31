@@ -1,14 +1,16 @@
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
-import { requestLogin, receiveLogin, requestLogout } from './actions/loginAction';
-
+import { requestLogin, receiveSmsId, requestLogout } from './actions/loginAction';
+import { getVerificationNumber } from '../api';
 
 export function* fetchUser(action) {
-    //call some api to fetch data
-    //const user = yield call(API.getUserData, action);
-    const user = action.phoneNumber;
-
-    //Dispatches receive login action to the reducer
-    yield put(receiveLogin(user));
+    try {
+        //call SMS api to fetch verificationKey
+        const result = yield call(getVerificationNumber, action.phoneNumber);
+        //Dispatches received SMS key action to the reducer
+        yield put(receiveSmsId(result.data.verificationId));
+    } catch (e) {
+        
+    }
 }
 
 export function* loginSaga() {

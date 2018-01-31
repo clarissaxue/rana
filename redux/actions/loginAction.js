@@ -1,3 +1,4 @@
+import { Navigation } from "react-native-navigation";
 /**
  * Action to request user login
  * @param {*p phone number} phoneNumber 
@@ -10,14 +11,14 @@ export const requestLogin = (number) => {
 };
 
 /**
- * Action to send userData to reducer
- * @param {*user profile data} userData 
+ * Action to send SMS verificationID to reducer
+ * @param {*generated SMS key} verificationId 
  */
-export const receiveLogin = (userData) => {
+export const receiveSmsId = (verificationId) => {
     return {
-        type: "RECEIVE_LOGIN_USER",
+        type: "RECEIVE_SMS_ID",
         //temporary phoneNumber prop
-        phoneNumber: userData
+        verificationId: verificationId
     }
 };
 
@@ -27,5 +28,13 @@ export const receiveLogin = (userData) => {
 export const requestLogout = () => {
     return {
         type: "REQUEST_LOGOUT_USER"
+    }
+}
+
+
+export const verifyLogin = (status) => {
+    return {
+        type: "USER_VERIFY",
+        verified: status
     }
 }

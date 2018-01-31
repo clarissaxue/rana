@@ -10,6 +10,7 @@
     "debugger": "open 'rndebugger://set-debugger-loc?host=localhost&port=8081'"
   },
   "dependencies": {
+    "axios": "^0.17.1",
     "react": "16.2.0",
     "react-native": "0.51.0",
     "react-native-animatable": "^1.2.4",
