@@ -12,9 +12,9 @@ class ProfileScreen extends Component {
 
     componentWillMount() {
         //Set redux user to home
-        if (this.props.login) {
+        if (this.props.user) {
             this.setState({
-                verificationId: this.props.login.verificationId
+                user: this.props.user
             });
         }
     }
@@ -26,7 +26,7 @@ class ProfileScreen extends Component {
     render() {
         return (
             <View>
-                <Text h1>Hello {this.state.verificationId}</Text>
+                <Text h1>This is your profile {this.state.user.data.firstName} {this.state.user.data.lastName}</Text>
                 <Button onPress={this.logout} backgroundColor="black" color="white" title="Log Out" borderRadius={30} large raised />
             </View>
         );
@@ -35,7 +35,7 @@ class ProfileScreen extends Component {
 
 function mapStateToProps(state, ownProps) {
     return {
-        login: state.login
+        user: state.user
     };
 }
 

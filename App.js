@@ -16,18 +16,22 @@ class App extends Component {
     //Listens to changes in the store and there are changes performs a callback function
     store.subscribe(this.onUserUpdate.bind(this));
 
-    this.startApp(this.props.login.navigate || "login");
+    if (this.props.user.data) {
+      this.startApp(this.props.user, this.props.login.navigate || "login");
+    } else {
+      this.startApp(this.props.user, "login");
+    }
   }
 
   /**
    * function that gets the current state of the login in the redux store and chooses a navigation app.
    */
   onUserUpdate() {
-    let { login } = store.getState();
-    console.log("Login state: ", login);
+    let { login, user } = store.getState();
+    console.log("User state: ", user);
 
     // handle a root change
-    this.startApp(login.navigate);
+    this.startApp(user, login.navigate);
   }
 
   /**
@@ -35,8 +39,8 @@ class App extends Component {
    * @param {*navigate prop from redux store to navigate through app states
 } navigate
    */
-  startApp = (navigate) => {
-    if (navigate === "home") {
+  startApp = (user, navigate) => {
+    if (user.data && navigate === "home") {
       //Renders Tab App
       Navigation.startTabBasedApp({
         tabs: [

@@ -11,7 +11,7 @@ const sagaMiddleware = createSagaMiddleware();
 const persistConfig = {
     key: 'root',
     storage,    //AsyncStorage
-    whitelist: ['login']
+    whitelist: ['login', 'user']
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

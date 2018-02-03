@@ -11,16 +11,20 @@ export default loginReducer = (state = {}, action) => {
                 verificationId: action.verificationId,
                 navigate: null
             };
-        case 'USER_VERIFY':
-            let navigate = action.verified ? "home" : "login"
-            return {
-                ...state,
-                verified: action.verified,
-                navigate: navigate
-            };
         case 'REQUEST_LOGOUT_USER':
             return {
                 navigate: "login"
+            };
+        case 'LOG_IN_ACCOUNT':
+            return {
+                ...state,
+                navigate: "home"
+            };
+        case 'EMAIL_TAKEN':
+            return {
+                ...state,
+                emailTaken: true,
+                navigate: null
             };
         default:
             return state;
