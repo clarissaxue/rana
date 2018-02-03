@@ -1,57 +1,85 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+import { View } from 'react-native';
+import { Navigation } from 'react-native-navigation';
+import { bindActionCreators, combineReducers } from "redux";
+import { connect, Provider } from 'react-redux';
+import { registerScreens } from './screens';
+import { store } from './redux/store';
+import { requestLogin, receiveLogin } from './redux/actions/loginAction';
+import { loadUser } from './redux/sagas';
+import storage from 'redux-persist/lib/storage';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+class App extends Component {
+  constructor(props) {
+    super(props);
 
-export default class App extends Component<{}> {
+    //Listens to changes in the store and there are changes performs a callback function
+    store.subscribe(this.onUserUpdate.bind(this));
+
+    if (this.props.user.data) {
+      this.startApp(this.props.user, this.props.login.navigate || "login");
+    } else {
+      this.startApp(this.props.user, "login");
+    }
+  }
+
+  /**
+   * function that gets the current state of the login in the redux store and chooses a navigation app.
+   */
+  onUserUpdate() {
+    let { login, user } = store.getState();
+    console.log("User state: ", user);
+
+    // handle a root change
+    this.startApp(user, login.navigate);
+  }
+
+  /**
+   * Starts the application as a tab based app or a single screen app
+   * @param {*navigate prop from redux store to navigate through app states
+} navigate
+   */
+  startApp = (user, navigate) => {
+    if (user.data && navigate === "home") {
+      //Renders Tab App
+      Navigation.startTabBasedApp({
+        tabs: [
+          {
+            label: 'One',
+            screen: "HomeScreen",
+            title: 'Home',
+          },
+          {
+            label: 'Two',
+            screen: "ProfileScreen",
+            title: 'My Profile'
+          }
+        ],
+        animationType: 'fade'
+      });
+    }
+    else if (navigate === "login") {
+      //Renders Single Page App for Login
+      Navigation.startSingleScreenApp({
+        screen: {
+          screen: 'GetStartedScreen'
+        },
+        animationType: 'fade'
+      });
+    }
+  }
+  //Render returns null because the Navigation renders the app
   render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
-      </View>
-    );
+    return null;
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+function mapStateToProps(state, ownProps) {
+  return {
+    login: state.login,
+    user: state.user,
+
+  };
+}
+
+export default connect(mapStateToProps, null)(App);

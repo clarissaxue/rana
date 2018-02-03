@@ -1,4 +1,11 @@
-import { AppRegistry } from 'react-native';
-import App from './App';
+import { Navigation } from 'react-native-navigation';
+import { store } from './redux/store';
+import { Provider } from 'react-redux';
+import { registerScreens } from './screens';
 
-AppRegistry.registerComponent('rana', () => App);
+registerScreens(store, Provider);
+Navigation.startSingleScreenApp({
+    screen: {
+        screen: 'rana'
+    }
+});
